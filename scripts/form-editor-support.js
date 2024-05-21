@@ -48,7 +48,22 @@ function annotateItems(items, formDefinition, formFieldMap) {
       if (fieldWrapper.classList.contains('panel-wrapper')) {
         fieldWrapper.setAttribute('data-aue-type', 'container');
         fieldWrapper.setAttribute('data-aue-behavior', 'component');
-        annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+        if (fieldWrapper.classList.contains('fragment-wrapper')) {
+          fieldWrapper.replaceChildren();
+          const titleEl = document.createElement('div');
+          titleEl.textContent = fd.label?.value || fd.name;
+          fieldWrapper.addChild(titleEl);
+          fieldWrapper.appendChild(document.createElement('hr'));
+          const items = getItems(fd);
+          items.forEach((item) => {
+            const itemLabel = item.label?.value || item.name;
+            const itemLabelEl = document.createTextNode(itemLabel);
+            fieldWrapper.appendChild(itemLabelEl);
+            fieldWrapper.appendChild(document.createElement('br'));
+          });
+        } else {
+          annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+        }
       }
     }
   });
