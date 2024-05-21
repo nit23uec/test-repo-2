@@ -159,6 +159,9 @@ function createFieldSet(fd) {
     wrapper.dataset.repeatable = true;
     wrapper.dataset.index = fd.index || 0;
   }
+  if (fd.properties['fd:fragment']) {
+    wrapper.classList.add('fragment-wrapper');
+  }
   return wrapper;
 }
 
