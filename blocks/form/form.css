@@ -437,7 +437,7 @@ main .form form .panel-wrapper{
   gap: var(--form-field-vert-gap) var(--form-field-horz-gap);
 }
 
-main .form form .edit-mode .fragment-wrapper{
+main .form form.edit-mode .fragment-wrapper{
     border-opacity: .1;
     border-width: 1px;
     padding: 15px;
