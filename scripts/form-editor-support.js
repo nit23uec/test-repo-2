@@ -52,7 +52,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
           fieldWrapper.replaceChildren();
           const titleEl = document.createElement('div');
           titleEl.textContent = fd.label?.value || fd.name;
-          fieldWrapper.addChild(titleEl);
+          fieldWrapper.appendChild(titleEl);
           fieldWrapper.appendChild(document.createElement('hr'));
           const items = getItems(fd);
           items.forEach((item) => {
