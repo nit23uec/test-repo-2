@@ -48,7 +48,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
       if (fieldWrapper.classList.contains('panel-wrapper')) {
         fieldWrapper.setAttribute('data-aue-type', 'container');
         fieldWrapper.setAttribute('data-aue-behavior', 'component');
-        if (fieldWrapper.classList.contains('fragment-wrapper')) {
+        if (fieldWrapper.classList.contains('fragment-wrapper') && document.documentElement.classList.contains('adobe-ue-edit')) {
           fieldWrapper.replaceChildren();
           const titleEl = document.createElement('div');
           titleEl.textContent = fd.label?.value || fd.name;
