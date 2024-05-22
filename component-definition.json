@@ -199,6 +199,23 @@
           }
         },
         {
+          "title": "File Attachment",
+          "id": "file-input",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/fd/components/form/text/v1/text",
+                "template": {
+                  "jcr:title": "File Attachment",
+                  "fieldType": "file-input",
+                  "accept": ["audio/*", " video/*", "image/*", "text/*", "application/pdf"],
+                  "buttonText": "Attach"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Email",
           "id": "email",
           "plugins": {
