@@ -28,15 +28,7 @@ function getFieldById(panel, id, formFieldMap) {
   return field;
 }
 
-function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
-  const newFieldWrapper = fragmentFieldWrapper.cloneNode(true);
-  newFieldWrapper.setAttribute('data-aue-type', 'component');
-  newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fragmentDefinition.properties['fd:path']}`);
-  newFieldWrapper.setAttribute('data-aue-model', 'fragment');
-  newFieldWrapper.setAttribute('data-aue-label', fragmentDefinition.name);
-  newFieldWrapper.classList.add('edit-mode');
-  newFieldWrapper.replaceChildren();
-  fragmentFieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
+function generateFragmentRendition(fragmentDefinition) {
   const titleEl = document.createElement('div');
   titleEl.textContent = fragmentDefinition.label?.value || fragmentDefinition.name;
   newFieldWrapper.appendChild(titleEl);
@@ -48,6 +40,23 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
     newFieldWrapper.appendChild(itemLabelEl);
     newFieldWrapper.appendChild(document.createElement('br'));
   });
+}
+
+function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
+  if (!fragmentFieldWrapper.classList.contains('edit-mode')) {
+    const newFieldWrapper = fragmentFieldWrapper.cloneNode(true);
+    newFieldWrapper.setAttribute('data-aue-type', 'component');
+    newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fragmentDefinition.properties['fd:path']}`);
+    newFieldWrapper.setAttribute('data-aue-model', 'fragment');
+    newFieldWrapper.setAttribute('data-aue-label', fragmentDefinition.name);
+    newFieldWrapper.classList.add('edit-mode');
+    newFieldWrapper.replaceChildren();
+    fragmentFieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
+    generateFragmentRendition(fragmentDefinition);
+  } else {
+    fragmentFieldWrapper.replaceChildren();
+    generateFragmentRendition(fragmentDefinition);
+  }
 }
 
 function annotateItems(items, formDefinition, formFieldMap) {
@@ -170,8 +179,12 @@ async function applyChanges(event) {
           const parent = element.closest('.panel-wrapper') || element.closest('form') || element.querySelector('form');
           const parentDef = getFieldById(formDef, parent.dataset.id, {});
           parent.replaceChildren();
-          await generateFormRendition(parentDef, parent, getItems);
-          annotateItems(parent.childNodes, formDef, {});
+          if (parentDef.properties['fd:fragment']) {
+            annotateFormFragment(parent, parentDef);
+          } else {
+            await generateFormRendition(parentDef, parent, getItems);
+            annotateItems(parent.childNodes, formDef, {});
+          }
           return true;
         }
         return false;
