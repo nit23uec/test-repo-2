@@ -34,26 +34,25 @@ function annotateItems(items, formDefinition, formFieldMap) {
       const { id } = fieldWrapper.dataset;
       const fd = getFieldById(formDefinition, id, formFieldMap);
       if (fd && fd.properties) {
-        fieldWrapper.setAttribute('data-aue-type', 'component');
-        fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
-        if (fd.properties['fd:fragment']) {
-          fieldWrapper.setAttribute('data-aue-model', 'fragment');
-        } else {
+        if(!fd.properties['fd:fragment']) {
+          fieldWrapper.setAttribute('data-aue-type', 'component');
+          fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType === 'image' || fd.fieldType === 'button' ? `form-${fd.fieldType}` : fd.fieldType);
+          fieldWrapper.setAttribute('data-aue-label', fd.name);
         }
-        fieldWrapper.setAttribute('data-aue-label', fd.name);
       } else {
         console.warn(`field ${id} not found in form definition`);
       }
       if (fieldWrapper.classList.contains('panel-wrapper')) {
-        fieldWrapper.setAttribute('data-aue-type', 'container');
-        fieldWrapper.setAttribute('data-aue-behavior', 'component');
-        if (fieldWrapper.classList.contains('fragment-wrapper') && document.documentElement.classList.contains('adobe-ue-edit')) {
-          // clone the fiedlWrapper and insert it adjacent to the current fieldWrapper
+        if (fd.properties['fd:fragment'] && document.documentElement.classList.contains('adobe-ue-edit')) {
           const newFieldWrapper = fieldWrapper.cloneNode(true);
+          newFieldWrapper.setAttribute('data-aue-type', 'component');
+          newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
+          newFieldWrapper.setAttribute('data-aue-model', 'fragment');
+          newFieldWrapper.setAttribute('data-aue-label', fd.name);
           newFieldWrapper.classList.add('edit-mode');
-          fieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
           newFieldWrapper.replaceChildren();
+          fieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
           const titleEl = document.createElement('div');
           titleEl.textContent = fd.label?.value || fd.name;
           newFieldWrapper.appendChild(titleEl);
@@ -66,6 +65,8 @@ function annotateItems(items, formDefinition, formFieldMap) {
             newFieldWrapper.appendChild(document.createElement('br'));
           });
         } else {
+          fieldWrapper.setAttribute('data-aue-type', 'container');
+          fieldWrapper.setAttribute('data-aue-behavior', 'component');
           annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
         }
       }
