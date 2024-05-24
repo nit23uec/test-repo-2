@@ -28,6 +28,28 @@ function getFieldById(panel, id, formFieldMap) {
   return field;
 }
 
+function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
+  const newFieldWrapper = fragmentFieldWrapper.cloneNode(true);
+  newFieldWrapper.setAttribute('data-aue-type', 'component');
+  newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fragmentDefinition.properties['fd:path']}`);
+  newFieldWrapper.setAttribute('data-aue-model', 'fragment');
+  newFieldWrapper.setAttribute('data-aue-label', fragmentDefinition.name);
+  newFieldWrapper.classList.add('edit-mode');
+  newFieldWrapper.replaceChildren();
+  fragmentFieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
+  const titleEl = document.createElement('div');
+  titleEl.textContent = fragmentDefinition.label?.value || fragmentDefinition.name;
+  newFieldWrapper.appendChild(titleEl);
+  newFieldWrapper.appendChild(document.createElement('hr'));
+  const items = getItems(fragmentDefinition);
+  items.forEach((item) => {
+    const itemLabel = item.label?.value || item.name;
+    const itemLabelEl = document.createTextNode(itemLabel);
+    newFieldWrapper.appendChild(itemLabelEl);
+    newFieldWrapper.appendChild(document.createElement('br'));
+  });
+}
+
 function annotateItems(items, formDefinition, formFieldMap) {
   items.forEach((fieldWrapper) => {
     if (fieldWrapper.classList.contains('field-wrapper')) {
@@ -45,25 +67,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
       }
       if (fieldWrapper.classList.contains('panel-wrapper')) {
         if (fd.properties['fd:fragment'] && document.documentElement.classList.contains('adobe-ue-edit')) {
-          const newFieldWrapper = fieldWrapper.cloneNode(true);
-          newFieldWrapper.setAttribute('data-aue-type', 'component');
-          newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
-          newFieldWrapper.setAttribute('data-aue-model', 'fragment');
-          newFieldWrapper.setAttribute('data-aue-label', fd.name);
-          newFieldWrapper.classList.add('edit-mode');
-          newFieldWrapper.replaceChildren();
-          fieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
-          const titleEl = document.createElement('div');
-          titleEl.textContent = fd.label?.value || fd.name;
-          newFieldWrapper.appendChild(titleEl);
-          newFieldWrapper.appendChild(document.createElement('hr'));
-          const items = getItems(fd);
-          items.forEach((item) => {
-            const itemLabel = item.label?.value || item.name;
-            const itemLabelEl = document.createTextNode(itemLabel);
-            newFieldWrapper.appendChild(itemLabelEl);
-            newFieldWrapper.appendChild(document.createElement('br'));
-          });
+          annotateFormFragment(fieldWrapper, fd);
         } else {
           fieldWrapper.setAttribute('data-aue-type', 'container');
           fieldWrapper.setAttribute('data-aue-behavior', 'component');
