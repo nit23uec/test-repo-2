@@ -66,7 +66,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
         console.warn(`field ${id} not found in form definition`);
       }
       if (fieldWrapper.classList.contains('panel-wrapper')) {
-        if (fd.properties['fd:fragment'] && document.documentElement.classList.contains('adobe-ue-edit')) {
+        if (fd.properties['fd:fragment']) {
           annotateFormFragment(fieldWrapper, fd);
         } else {
           fieldWrapper.setAttribute('data-aue-type', 'container');
