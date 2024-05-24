@@ -30,6 +30,7 @@ function getFieldById(panel, id, formFieldMap) {
 
 function generateFragmentRendition(fragmentFieldWrapper, fragmentDefinition) {
   const titleEl = document.createElement('div');
+  titleEl.classList.add('fragment-title');
   titleEl.textContent = fragmentDefinition.label?.value || fragmentDefinition.name;
   fragmentFieldWrapper.appendChild(titleEl);
   fragmentFieldWrapper.appendChild(document.createElement('hr'));
@@ -59,7 +60,7 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
   }
 }
 
-function annotateItems(items, formDefinition, formFieldMap) {
+function annotateItems(items, formDefinition, formFieldMap) {  
   items.forEach((fieldWrapper) => {
     if (fieldWrapper.classList.contains('field-wrapper') && !fieldWrapper.classList.contains('edit-mode')) {
       const { id } = fieldWrapper.dataset;
