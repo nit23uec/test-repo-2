@@ -49,17 +49,21 @@ function annotateItems(items, formDefinition, formFieldMap) {
         fieldWrapper.setAttribute('data-aue-type', 'container');
         fieldWrapper.setAttribute('data-aue-behavior', 'component');
         if (fieldWrapper.classList.contains('fragment-wrapper') && document.documentElement.classList.contains('adobe-ue-edit')) {
-          fieldWrapper.replaceChildren();
+          // clone the fiedlWrapper and insert it adjacent to the current fieldWrapper
+          const newFieldWrapper = fieldWrapper.cloneNode(true);
+          newFieldWrapper.classList.add('edit-mode');
+          fieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
+          newFieldWrapper.replaceChildren();
           const titleEl = document.createElement('div');
           titleEl.textContent = fd.label?.value || fd.name;
-          fieldWrapper.appendChild(titleEl);
-          fieldWrapper.appendChild(document.createElement('hr'));
+          newFieldWrapper.appendChild(titleEl);
+          newFieldWrapper.appendChild(document.createElement('hr'));
           const items = getItems(fd);
           items.forEach((item) => {
             const itemLabel = item.label?.value || item.name;
             const itemLabelEl = document.createTextNode(itemLabel);
-            fieldWrapper.appendChild(itemLabelEl);
-            fieldWrapper.appendChild(document.createElement('br'));
+            newFieldWrapper.appendChild(itemLabelEl);
+            newFieldWrapper.appendChild(document.createElement('br'));
           });
         } else {
           annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
