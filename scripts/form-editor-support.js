@@ -28,17 +28,17 @@ function getFieldById(panel, id, formFieldMap) {
   return field;
 }
 
-function generateFragmentRendition(fragmentDefinition) {
+function generateFragmentRendition(fragmentFieldWrapper, fragmentDefinition) {
   const titleEl = document.createElement('div');
   titleEl.textContent = fragmentDefinition.label?.value || fragmentDefinition.name;
-  newFieldWrapper.appendChild(titleEl);
-  newFieldWrapper.appendChild(document.createElement('hr'));
+  fragmentFieldWrapper.appendChild(titleEl);
+  fragmentFieldWrapper.appendChild(document.createElement('hr'));
   const fragItems = getItems(fragmentDefinition);
   fragItems.forEach((fragItem) => {
     const itemLabel = fragItem.label?.value || fragItem.name;
     const itemLabelEl = document.createTextNode(itemLabel);
-    newFieldWrapper.appendChild(itemLabelEl);
-    newFieldWrapper.appendChild(document.createElement('br'));
+    fragmentFieldWrapper.appendChild(itemLabelEl);
+    fragmentFieldWrapper.appendChild(document.createElement('br'));
   });
 }
 
@@ -52,10 +52,10 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
     newFieldWrapper.classList.add('edit-mode');
     newFieldWrapper.replaceChildren();
     fragmentFieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
-    generateFragmentRendition(fragmentDefinition);
+    generateFragmentRendition(newFieldWrapper, fragmentDefinition);
   } else {
     fragmentFieldWrapper.replaceChildren();
-    generateFragmentRendition(fragmentDefinition);
+    generateFragmentRendition(fragmentFieldWrapper, fragmentDefinition);
   }
 }
 
