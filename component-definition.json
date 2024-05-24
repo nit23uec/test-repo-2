@@ -209,7 +209,8 @@
                   "jcr:title": "File Attachment",
                   "fieldType": "file-input",
                   "accept": ["audio/*", " video/*", "image/*", "text/*", "application/pdf"],
-                  "buttonText": "Attach"
+                  "buttonText": "Attach",
+                  "type": "file"
                 }
               }
             }

@@ -638,12 +638,6 @@
                     },
                     {
                         "component": "text",
-                        "name": "buttonText",
-                        "label": "Button title",
-                        "valueType": "string"
-                    },
-                    {
-                        "component": "text",
                         "name": "dataRef",
                         "label": "Bind reference",
                         "valueType": "string"
@@ -678,12 +672,6 @@
                         "component": "boolean",
                         "name": "multiSelection",
                         "label": "Allow multiple attachments",
-                        "valueType": "string"
-                    },
-                    {
-                        "component": "richtext",
-                        "name": "dragDropText",
-                        "label": "Drag Drop Text",
                         "valueType": "string"
                     }
                 ]
