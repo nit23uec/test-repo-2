@@ -41,9 +41,9 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
   titleEl.textContent = fragmentDefinition.label?.value || fragmentDefinition.name;
   newFieldWrapper.appendChild(titleEl);
   newFieldWrapper.appendChild(document.createElement('hr'));
-  const items = getItems(fragmentDefinition);
-  items.forEach((item) => {
-    const itemLabel = item.label?.value || item.name;
+  const fragItems = getItems(fragmentDefinition);
+  fragItems.forEach((fragItem) => {
+    const itemLabel = fragItem.label?.value || fragItem.name;
     const itemLabelEl = document.createTextNode(itemLabel);
     newFieldWrapper.appendChild(itemLabelEl);
     newFieldWrapper.appendChild(document.createElement('br'));
