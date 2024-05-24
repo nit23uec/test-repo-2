@@ -52,6 +52,8 @@
       "fragment",
       "form-button",
       "form-image",
+      "form-submit-button",
+      "form-reset-button",
       "file-input"
     ]
   }
