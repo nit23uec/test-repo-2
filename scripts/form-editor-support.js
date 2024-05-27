@@ -44,6 +44,7 @@ function generateFragmentRendition(fragmentFieldWrapper, fragmentDefinition) {
 }
 
 function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
+  fragmentFieldWrapper.classList.toggle('fragment-wrapper', true);
   if (!fragmentFieldWrapper.classList.contains('edit-mode')) {
     const newFieldWrapper = fragmentFieldWrapper.cloneNode(true);
     newFieldWrapper.setAttribute('data-aue-type', 'component');
