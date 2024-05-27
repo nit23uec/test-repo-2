@@ -60,8 +60,9 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
   }
 }
 
-function annotateItems(items, formDefinition, formFieldMap) {  
-  items.forEach((fieldWrapper) => {
+function annotateItems(items, formDefinition, formFieldMap) {
+  for (let i = items.length - 1; i >= 0; i--) {
+    let fieldWrapper = items[i];
     if (fieldWrapper.classList.contains('field-wrapper') && !fieldWrapper.classList.contains('edit-mode')) {
       const { id } = fieldWrapper.dataset;
       const fd = getFieldById(formDefinition, id, formFieldMap);
@@ -85,7 +86,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
         }
       }
     }
-  });
+  }
 }
 
 function annotateFormForEditing(formEl, formDefinition) {
