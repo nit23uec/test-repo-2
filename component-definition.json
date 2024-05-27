@@ -232,8 +232,8 @@
           }
         },
         {
-          "title": "Fragment",
-          "id": "fragment",
+          "title": "Form Fragment",
+          "id": "form-fragment",
           "plugins": {
             "xwalk": {
               "page": {
