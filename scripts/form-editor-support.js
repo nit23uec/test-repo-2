@@ -184,15 +184,8 @@ async function applyChanges(event) {
           const parent = element.closest('.panel-wrapper') || element.closest('form') || element.querySelector('form');
           const parentDef = getFieldById(formDef, parent.dataset.id, {});
           parent.replaceChildren();
-          if (parentDef.properties['fd:fragment']) {
-            const fragment = parent.parentNode?.querySelector(`.fragment-wrapper:not(edit-mode)[data-id="${parentDef.id}"]`);
-            fragment.replaceChildren();
-            await generateFormRendition(parentDef, fragment, getItems);
-            annotateFormFragment(parent, parentDef);
-          } else {
-            await generateFormRendition(parentDef, parent, getItems);
-            annotateItems(parent.childNodes, formDef, {});
-          }
+          await generateFormRendition(parentDef, parent, getItems);
+          annotateItems(parent.childNodes, formDef, {});
           return true;
         }
         return false;
