@@ -181,10 +181,10 @@ async function applyChanges(event) {
           const parent = element.closest('.panel-wrapper') || element.closest('form') || element.querySelector('form');
           const parentDef = getFieldById(formDef, parent.dataset.id, {});
           parent.replaceChildren();
+          await generateFormRendition(parentDef, parent, getItems);
           if (parentDef.properties['fd:fragment']) {
             annotateFormFragment(parent, parentDef);
           } else {
-            await generateFormRendition(parentDef, parent, getItems);
             annotateItems(parent.childNodes, formDef, {});
           }
           return true;
