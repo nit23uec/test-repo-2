@@ -62,7 +62,7 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
 }
 
 function annotateItems(items, formDefinition, formFieldMap) {
-  for (let i = items.length - 1; i >= 0; i-=1) {
+  for (let i = items.length - 1; i >= 0; i -= 1) {
     const fieldWrapper = items[i];
     if (fieldWrapper.classList.contains('field-wrapper') && !fieldWrapper.classList.contains('edit-mode')) {
       const { id } = fieldWrapper.dataset;
