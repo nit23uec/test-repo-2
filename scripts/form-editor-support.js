@@ -62,13 +62,13 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
 }
 
 function annotateItems(items, formDefinition, formFieldMap) {
-  for (let i = items.length - 1; i >= 0; i--) {
-    let fieldWrapper = items[i];
+  for (let i = items.length - 1; i >= 0; i-=1) {
+    const fieldWrapper = items[i];
     if (fieldWrapper.classList.contains('field-wrapper') && !fieldWrapper.classList.contains('edit-mode')) {
       const { id } = fieldWrapper.dataset;
       const fd = getFieldById(formDefinition, id, formFieldMap);
       if (fd && fd.properties) {
-        if(!fd.properties['fd:fragment']) {
+        if (!fd.properties['fd:fragment']) {
           fieldWrapper.setAttribute('data-aue-type', 'component');
           fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType === 'image' || fd.fieldType === 'button' ? `form-${fd.fieldType}` : fd.fieldType);
