@@ -49,7 +49,7 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
     const newFieldWrapper = fragmentFieldWrapper.cloneNode(true);
     newFieldWrapper.setAttribute('data-aue-type', 'component');
     newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fragmentDefinition.properties['fd:path']}`);
-    newFieldWrapper.setAttribute('data-aue-model', 'fragment');
+    newFieldWrapper.setAttribute('data-aue-model', 'form-fragment');
     newFieldWrapper.setAttribute('data-aue-label', fragmentDefinition.name);
     newFieldWrapper.classList.add('edit-mode');
     newFieldWrapper.replaceChildren();
