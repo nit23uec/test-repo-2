@@ -165,7 +165,7 @@ async function applyChanges(event) {
   if (!content) return false;
 
   const parsedUpdate = new DOMParser().parseFromString(content, 'text/html');
-  const element = document.querySelector(`[data-aue-resource="${resource}"]`);
+  let element = document.querySelector(`[data-aue-resource="${resource}"]`);
 
   if (element) {
     const block = element.parentElement?.closest('.block[data-aue-resource]') || element?.closest('.block[data-aue-resource]');
