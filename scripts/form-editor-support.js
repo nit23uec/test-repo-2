@@ -179,12 +179,17 @@ async function applyChanges(event) {
         if (jsonContent) {
           const formDef = JSON.parse(cleanUp(jsonContent));
           const parent = element.closest('.panel-wrapper') || element.closest('form') || element.querySelector('form');
+          // get sibling node of the parent node that is a fargment-wrapper but doesn't has a class of edit-mode
+          const fragmentWrapper = parent.nextElementSibling;
+
           const parentDef = getFieldById(formDef, parent.dataset.id, {});
           parent.replaceChildren();
-          await generateFormRendition(parentDef, parent, getItems);
           if (parentDef.properties['fd:fragment']) {
+            const fragment = parent.parentNode?.querySelector('.fragment-wrapper:not(edit-mode)');
+            await generateFormRendition(parentDef, fragment, getItems);
             annotateFormFragment(parent, parentDef);
           } else {
+            await generateFormRendition(parentDef, parent, getItems);
             annotateItems(parent.childNodes, formDef, {});
           }
           return true;
