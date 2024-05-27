@@ -183,6 +183,7 @@ async function applyChanges(event) {
           parent.replaceChildren();
           if (parentDef.properties['fd:fragment']) {
             const fragment = parent.parentNode?.querySelector(`.fragment-wrapper:not(edit-mode)[data-id="${parentDef.id}"]`);
+            fragment.replaceChildren();
             await generateFormRendition(parentDef, fragment, getItems);
             annotateFormFragment(parent, parentDef);
           } else {
