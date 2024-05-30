@@ -237,7 +237,7 @@ function enableRuleEditorExtension() {
   head.appendChild(meta);
 }
 
-loadCSS(`${window.hlx.codeBasePath}/form-editor-support.css`);
+loadCSS(`${window.hlx.codeBasePath}/scripts/form-editor-support.css`);
 attachEventListners(document.querySelector('main'));
 const forms = document.querySelectorAll('form');
 annotateFormsForEditing(forms);
