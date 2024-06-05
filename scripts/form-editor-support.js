@@ -110,13 +110,17 @@ function handleEditorSelect(event) {
     const existingSelectedEl = wizardEl.querySelector('.current-wizard-step');
     existingSelectedEl.classList.remove('current-wizard-step');
     if (el.hasAttribute('data-index')) {
-      // if selected element is the direct chld of wizard
+      // if selected element is the direct child of wizard
       el.classList.add('current-wizard-step');
     } else {
       Array.from(wizardEl.children).forEach((child) => {
         const isElPresentUnderChild = child.querySelector(`[data-aue-resource='${resource}']`);
         if (isElPresentUnderChild) {
           child.classList.add('current-wizard-step');
+          const navigateToMenuItem = wizardEl.querySelector(`li[data-index="${child.dataset.index}"]`);
+          const currentMenuItem = wizardEl.querySelector('.wizard-menu-active-item');
+          currentMenuItem.classList.remove('wizard-menu-active-item');
+          navigateToMenuItem.classList.add('wizard-menu-active-item');
         }
       });
     }
