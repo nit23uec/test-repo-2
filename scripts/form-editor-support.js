@@ -113,7 +113,7 @@ function handleEditorSelect(event) {
       // if selected element is the direct chld of wizard
       el.classList.add('current-wizard-step');
     } else {
-      wizardEl.children.forEach((child) => {
+      Array.from(wizardEl.children).forEach((child) => {
         const isElPresentUnderChild = child.querySelector(`[data-aue-resource='${resource}']`);
         if (isElPresentUnderChild) {
           child.classList.add('current-wizard-step');
