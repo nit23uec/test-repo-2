@@ -85,7 +85,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
       } else {
         console.warn(`field ${id} not found in form definition`);
       }
-      if (fieldWrapper.classList.contains('panel-wrapper')) {
+      if (fd && fd.fieldType === 'panel') {
         if (fd.repeatable) {
           const repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
           annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
