@@ -338,6 +338,9 @@ function renderField(fd) {
 }
 
 export async function generateFormRendition(panel, container, getItems = (p) => p?.items) {
+  if (panel.fieldType === 'panel') {
+    container.replaceWith(createFieldSet(panel));
+  }
   const items = getItems(panel) || [];
   const promises = items.map(async (field) => {
     field.value = field.value ?? '';
@@ -345,15 +348,22 @@ export async function generateFormRendition(panel, container, getItems = (p) => 
     if (fieldType === 'captcha') {
       captchaField = field;
     } else {
-      const element = renderField(field);
-      if (field.appliedCssClassNames) {
-        element.className += ` ${field.appliedCssClassNames}`;
-      }
-      colSpanDecorator(field, element);
-      const decorator = await componentDecorater(field);
+      let decorator;
       if (field?.fieldType === 'panel') {
-        await generateFormRendition(field, element, getItems);
+        if (field.appliedCssClassNames) {
+          container.className += ` ${field.appliedCssClassNames}`;
+        }
+        colSpanDecorator(field, container);
+        decorator = await componentDecorater(field);
+        await generateFormRendition(field, container, getItems);
         return element;
+      } else {
+        const element = renderField(field);
+        if (field.appliedCssClassNames) {
+          element.className += ` ${field.appliedCssClassNames}`;
+        }
+        colSpanDecorator(field, element);
+        decorator = await componentDecorater(field);
       }
       if (typeof decorator === 'function') {
         return decorator(element, field, container);
