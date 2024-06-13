@@ -74,7 +74,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
           fieldWrapper.setAttribute('data-aue-behavior', 'component');
           fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
-          fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
+          fieldWrapper.setAttribute('data-aue-label', "Text");
           fieldWrapper.setAttribute('data-aue-prop', "value");
         } else if (!fd.properties['fd:fragment']) {
           fieldWrapper.setAttribute('data-aue-type', 'component');
