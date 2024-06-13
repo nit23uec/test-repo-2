@@ -274,4 +274,4 @@ const forms = document.querySelectorAll('form');
 annotateFormsForEditing(forms);
 const observer = new MutationObserver(instrumentForms);
 observer.observe(document, { childList: true, subtree: true, attributeFilter: ['form'] });
-enableRuleEditorExtension();
+//enableRuleEditorExtension();
