@@ -111,5 +111,6 @@ export default function transferRepeatableDOM(form) {
     }
     div.append(addButton);
     div.className = 'repeat-wrapper';
+    div.parentElement.dataset.id = el.dataset.id;
   });
 }
