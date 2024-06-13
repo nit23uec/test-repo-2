@@ -1,14 +1,14 @@
 import { generateFormRendition } from '../blocks/form/form.js';
 import { loadCSS } from './aem.js';
 
-function getItems(container) {
+export function getItems(container) {
   if (container[':itemsOrder'] && container[':items']) {
     return container[':itemsOrder'].map((itemKey) => container[':items'][itemKey]);
   }
   return [];
 }
 
-function getFieldById(panel, id, formFieldMap) {
+export function getFieldById(panel, id, formFieldMap) {
   let field;
 
   if (panel.id === id) {
@@ -51,7 +51,7 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
     newFieldWrapper.setAttribute('data-aue-type', 'component');
     newFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fragmentDefinition.properties['fd:path']}`);
     newFieldWrapper.setAttribute('data-aue-model', 'form-fragment');
-    newFieldWrapper.setAttribute('data-aue-label', fragmentDefinition.name);
+    newFieldWrapper.setAttribute('data-aue-label', fragmentDefinition.label?.value || fragmentDefinition.name);
     newFieldWrapper.classList.add('edit-mode');
     newFieldWrapper.replaceChildren();
     fragmentFieldWrapper.insertAdjacentElement('afterend', newFieldWrapper);
@@ -74,36 +74,31 @@ function annotateItems(items, formDefinition, formFieldMap) {
           fieldWrapper.setAttribute('data-aue-behavior', 'component');
           fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
-          fieldWrapper.setAttribute('data-aue-label', "Text");
-          fieldWrapper.setAttribute('data-aue-prop', "value");
+          fieldWrapper.setAttribute('data-aue-label', 'Text');
+          fieldWrapper.setAttribute('data-aue-prop', 'value');
         } else if (!fd.properties['fd:fragment']) {
           fieldWrapper.setAttribute('data-aue-type', 'component');
           fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType === 'image' || fd.fieldType === 'button' ? `form-${fd.fieldType}` : fd.fieldType);
-          fieldWrapper.setAttribute('data-aue-label', fd.name);
+          fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
         }
       } else {
         console.warn(`field ${id} not found in form definition`);
       }
       if (fd && fd.fieldType === 'panel') {
-        if (fd.repeatable) {
-          const repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
-          annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
+        if (fd.properties['fd:fragment']) {
+          annotateFormFragment(fieldWrapper, fd);
         } else {
-          if (fd?.properties['fd:fragment']) {
-            annotateFormFragment(fieldWrapper, fd);
-          } else {
-            fieldWrapper.setAttribute('data-aue-type', 'container');
-            fieldWrapper.setAttribute('data-aue-behavior', 'component');
-            annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
-          }
+          fieldWrapper.setAttribute('data-aue-type', 'container');
+          fieldWrapper.setAttribute('data-aue-behavior', 'component');
+          annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
         }
       }
     }
   }
 }
 
-function annotateFormForEditing(formEl, formDefinition) {
+export function annotateFormForEditing(formEl, formDefinition) {
   if (document.documentElement.classList.contains('adobe-ue-edit')) {
     formEl.classList.add('edit-mode');
   }
@@ -168,6 +163,21 @@ async function instrumentForms(mutationsList) {
   annotateFormsForEditing(formsEl);
 }
 
+function cleanUp(content) {
+  const formDef = content.replaceAll('^(([^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+(\\\\.[^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+)*)|(\\".+\\"))@((\\\\[[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}])|(([a-zA-Z\\\\-0-9]+\\\\.)\\+[a-zA-Z]{2,}))$', '');
+  return formDef?.replace(/\x83\n|\n|\s\s+/g, '');
+}
+
+function decode(rawContent) {
+  const content = rawContent.trim();
+  if (content.startsWith('"') && content.endsWith('"')) {
+    // In the new 'jsonString' context, Server side code comes as a string with escaped characters,
+    // hence the double parse
+    return JSON.parse(JSON.parse(content));
+  }
+  return JSON.parse(cleanUp(content));
+}
+
 async function applyChanges(event) {
   // redecorate default content and blocks on patches (in the properties rail)
   const { detail } = event;
@@ -194,7 +204,7 @@ async function applyChanges(event) {
         const codeEl = newContainer?.querySelector('code');
         const jsonContent = codeEl?.textContent;
         if (jsonContent) {
-          const formDef = JSON.parse(JSON.parse(jsonContent));
+          const formDef = decode(jsonContent);
           if (element.classList.contains('panel-wrapper')) {
             element = element.parentNode;
           }
