@@ -86,12 +86,17 @@ function annotateItems(items, formDefinition, formFieldMap) {
         console.warn(`field ${id} not found in form definition`);
       }
       if (fieldWrapper.classList.contains('panel-wrapper')) {
-        if (fd?.properties['fd:fragment']) {
-          annotateFormFragment(fieldWrapper, fd);
+        if (fd.repeatable) {
+          const repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
+          annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
         } else {
-          fieldWrapper.setAttribute('data-aue-type', 'container');
-          fieldWrapper.setAttribute('data-aue-behavior', 'component');
-          annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          if (fd?.properties['fd:fragment']) {
+            annotateFormFragment(fieldWrapper, fd);
+          } else {
+            fieldWrapper.setAttribute('data-aue-type', 'container');
+            fieldWrapper.setAttribute('data-aue-behavior', 'component');
+            annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          }
         }
       }
     }

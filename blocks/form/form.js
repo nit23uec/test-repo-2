@@ -338,9 +338,6 @@ function renderField(fd) {
 }
 
 export async function generateFormRendition(panel, container, getItems = (p) => p?.items) {
-  if (panel.fieldType === 'panel') {
-    container.replaceWith(createFieldSet(panel));
-  }
   const items = getItems(panel) || [];
   const promises = items.map(async (field) => {
     field.value = field.value ?? '';
