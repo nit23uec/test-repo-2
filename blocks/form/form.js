@@ -348,27 +348,20 @@ export async function generateFormRendition(panel, container, getItems = (p) => 
     if (fieldType === 'captcha') {
       captchaField = field;
     } else {
-      let decorator;
+      const element = renderField(field);
+      if (field.appliedCssClassNames) {
+        element.className += ` ${field.appliedCssClassNames}`;
+      }
+      colSpanDecorator(field, element);
+      const decorator = await componentDecorater(field);
       if (field?.fieldType === 'panel') {
-        if (field.appliedCssClassNames) {
-          container.className += ` ${field.appliedCssClassNames}`;
-        }
-        colSpanDecorator(field, container);
-        decorator = await componentDecorater(field);
-        await generateFormRendition(field, container, getItems);
-        return container;
-      } else {
-        const element = renderField(field);
-        if (field.appliedCssClassNames) {
-          element.className += ` ${field.appliedCssClassNames}`;
-        }
-        colSpanDecorator(field, element);
-        decorator = await componentDecorater(field);
-        if (typeof decorator === 'function') {
-          return decorator(element, field, container);
-        }
+        await generateFormRendition(field, element, getItems);
         return element;
       }
+      if (typeof decorator === 'function') {
+        return decorator(element, field, container);
+      }
+      return element;
     }
     return null;
   });
