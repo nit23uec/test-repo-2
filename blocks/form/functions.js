@@ -33,6 +33,7 @@ function days(endDate, startDate) {
  * @param {*} imageChoiceField
  */
 function populateImageChoice(imageChoiceField, globals) {
+  const properties = imageChoiceField.properties;
   const response = [
     {
       id: 1,
@@ -51,6 +52,7 @@ function populateImageChoice(imageChoiceField, globals) {
     },
   ];
   globals.functions.setProperty(imageChoiceField, {properties: {
+    ...properties,
     options: response
   }});
 }
