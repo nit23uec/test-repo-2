@@ -33,22 +33,22 @@ function days(endDate, startDate) {
  * @param {*} imageChoiceField
  */
 function populateImageChoice(imageChoiceField, globals) {
-  const properties = imageChoiceField.properties;
+  const properties = imageChoiceField._jsonModel.properties;
   const response = [
     {
       id: 1,
-      name: 'image1',
-      url: 'https://www.example.com/image1.jpg',
+      name: 'Nissan Juke',
+      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
     },
     {
       id: 2,
-      name: 'image2',
-      url: 'https://www.example.com/image2.jpg',
+      name: 'New Nissan Qashqai',
+      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
     },
     {
       id: 3,
-      name: 'image3',
-      url: 'https://www.example.com/image3.jpg',
+      name: 'Nissan X-Trail',
+      source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
     },
   ];
   globals.functions.setProperty(imageChoiceField, {properties: {
