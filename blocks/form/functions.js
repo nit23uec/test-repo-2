@@ -32,7 +32,7 @@ function days(endDate, startDate) {
  * Populates the image choice component with the given options
  * @param {*} imageChoiceField
  */
-function populateImageChoice(imageChoiceField) {
+function populateImageChoice(imageChoiceField, globals) {
   const response = [
     {
       id: 1,
