@@ -3,7 +3,7 @@ export default async function decorate(fieldDiv, field, htmlForm) {
   console.log(field.properties["options"]);
   const options = field.properties["options"];
   // iterate options array of objects
-  options.forEach((option) => {
+  options && options.forEach((option) => {
     // create a new image element
     const img = document.createElement("img");
     // set the src attribute to the url of the image
