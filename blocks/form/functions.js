@@ -31,6 +31,7 @@ function days(endDate, startDate) {
 /**
  * Populates the image choice component with the given options
  * @param {*} imageChoiceField
+ * @param {scope} globals
  */
 function populateImageChoice(imageChoiceField, globals) {
   const properties = imageChoiceField._jsonModel.properties;
