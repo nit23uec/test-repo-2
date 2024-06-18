@@ -266,6 +266,22 @@
           }
         },
         {
+          "title": "Image Choice",
+          "id": "imagechoice",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/fd/components/form/radiobutton/v1/radiobutton",
+                "template": {
+                  "jcr:title": "Image Choice",
+                  "fieldType": "radio-group",
+                  "fd:viewType": "imagechoice"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Button",
           "id": "form-button",
           "plugins": {

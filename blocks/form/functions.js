@@ -28,5 +28,32 @@ function days(endDate, startDate) {
   return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 }
 
+/**
+ * Populates the image choice component with the given options
+ * @param {*} imageChoiceField
+ */
+function populateImageChoice(imageChoiceField) {
+  const response = [
+    {
+      id: 1,
+      name: 'image1',
+      url: 'https://www.example.com/image1.jpg',
+    },
+    {
+      id: 2,
+      name: 'image2',
+      url: 'https://www.example.com/image2.jpg',
+    },
+    {
+      id: 3,
+      name: 'image3',
+      url: 'https://www.example.com/image3.jpg',
+    },
+  ];
+  globals.functions.setProperty(imageChoiceField, {properties: {
+    options: response
+  }});
+}
+
 // eslint-disable-next-line import/prefer-default-export
-export { getFullName, days };
+export { getFullName, days, populateImageChoice };
