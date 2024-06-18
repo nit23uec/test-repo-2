@@ -16,6 +16,7 @@ export default async function decorate(fieldDiv, field) {
 
       let input = document.createElement('input');
       input.type = 'radio';
+      input.className = 'model-radio';
       input.dataset.modelId = model.id;
       input.id = model.id;
       input.name = 'model_card';
