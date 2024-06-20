@@ -1,3 +1,5 @@
+import { getId } from "../util.js";
+
 // eslint-disable-next-line no-unused-vars
 export default async function decorate(fieldDiv, field) {
   const labelEl = fieldDiv.querySelector("legend");
@@ -21,8 +23,9 @@ export default async function decorate(fieldDiv, field) {
       input.type = 'radio';
       input.className = 'model-radio';
       input.value = model.id;
-      input.id = field.id;
-      input.name = 'model_card';
+      input.id = getId(field.name);
+      input.dataset.fieldType = field.fieldType;
+      input.name = field.name;
       input.tabIndex = '-1';
       li.appendChild(input);
 
@@ -37,7 +40,7 @@ export default async function decorate(fieldDiv, field) {
       li.appendChild(picture);
 
       let label = document.createElement('label');
-      label.htmlFor = model.id;
+      label.htmlFor = input.id;
       label.className = 'model-name';
       label.textContent = model.name;
       li.appendChild(label);

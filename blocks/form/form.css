@@ -565,12 +565,11 @@ main form .wizard > .current-wizard-step.panel-wrapper:last-of-type ~ .wizard-bu
     position: relative;
     cursor: pointer
 }
-
-input[name="model_card"] {
-    height: 100% !important;
-    padding: 0 !important;
-    width: 100% !important;
-    position: absolute !important;
+.model-radio {
+    height: 100%;
+    padding: 0;
+    width: 100%;
+    position: absolute;
     appearance: none;
     cursor: pointer;
 }
