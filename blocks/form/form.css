@@ -561,6 +561,11 @@ main form .wizard > .current-wizard-step.panel-wrapper:last-of-type ~ .wizard-bu
     display: contents;
 }
 
+.model-block {
+    position: relative;
+    cursor: pointer
+}
+
 input[name="model_card"] {
     height: 100% !important;
     padding: 0 !important;
