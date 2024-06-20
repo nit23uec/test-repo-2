@@ -244,10 +244,7 @@ function attachEventListners(main) {
   main?.addEventListener('aue:ui-select', handleEditorSelect);
 
   document.body.addEventListener('aue:ui-preview', () => {
-    const forms = document.querySelectorAll('form');
-    forms.forEach((formEl) => {
-      formEl.classList.remove('edit-mode');
-    });
+    window.location.reload();
   });
 
   document.body.addEventListener('aue:ui-edit', () => {
