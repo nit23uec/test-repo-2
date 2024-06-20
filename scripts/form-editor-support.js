@@ -244,7 +244,7 @@ function attachEventListners(main) {
   main?.addEventListener('aue:ui-select', handleEditorSelect);
 
   document.body.addEventListener('aue:ui-preview', () => {
-    //window.location.reload();
+    // window.location.reload();
   });
 
   document.body.addEventListener('aue:ui-edit', () => {
