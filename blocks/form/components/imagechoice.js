@@ -25,7 +25,7 @@ export default async function decorate(fieldDiv, field) {
       input.value = model.id;
       input.id = getId(field.name);
       input.dataset.fieldType = field.fieldType;
-      input.name = field.name;
+      input.name = field.id;
       input.tabIndex = '-1';
       li.appendChild(input);
 
