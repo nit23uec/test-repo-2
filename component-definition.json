@@ -275,6 +275,7 @@
                 "template": {
                   "jcr:title": "Image Choice",
                   "fieldType": "radio-group",
+                  "type": "object",
                   "fd:viewType": "imagechoice",
                   "enum": ["0", "1"]
                 }

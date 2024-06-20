@@ -3,8 +3,8 @@ export default async function decorate(fieldDiv, field) {
   const labelEl = fieldDiv.querySelector("legend");
   fieldDiv.replaceChildren(labelEl);
   fieldDiv.classList.add("image-choice-container");
-  console.log(field.properties["options"]);
-  const models = field.properties["options"];
+  console.log(field.enum);
+  const models = field.enum;
 
   const ul = document.createElement('ul');
   ul.className = 'model-list-wrapper';

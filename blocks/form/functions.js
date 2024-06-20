@@ -34,7 +34,6 @@ function days(endDate, startDate) {
  * @param {scope} globals
  */
 function populateImageChoice(imageChoiceField, globals) {
-  const properties = imageChoiceField._jsonModel.properties;
   const response = [
     {
       id: 1,
@@ -52,10 +51,7 @@ function populateImageChoice(imageChoiceField, globals) {
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
     },
   ];
-  globals.functions.setProperty(imageChoiceField, {properties: {
-    ...properties,
-    options: response
-  }});
+  globals.functions.setProperty(imageChoiceField, {enum: response});
 }
 
 // eslint-disable-next-line import/prefer-default-export
