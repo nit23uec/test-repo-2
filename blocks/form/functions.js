@@ -81,7 +81,7 @@ function populateSelectedModel(modelChoiceField, selectedModelPanel, globals) {
   }
   const selectedModel = modelDetailsInfoMap[modelChoiceField];
 
-  globals.functions.setProperty(selectedModelPanel.selectedModelImage, {value: selectedModel.source});
+  globals.functions.setProperty(selectedModelPanel.selectedModelImage, {source: selectedModel.source});
   globals.functions.setProperty(selectedModelPanel.selectedModelName, {value: selectedModel.name});
 }
 
