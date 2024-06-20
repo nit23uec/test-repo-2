@@ -20,13 +20,10 @@ export default async function decorate(fieldDiv, field) {
       let input = document.createElement('input');
       input.type = 'radio';
       input.className = 'model-radio';
-      input.dataset.modelId = model.id;
-      input.id = model.id;
+      input.value = model.id;
+      input.id = field.id;
       input.name = 'model_card';
       input.tabIndex = '-1';
-      input.addEventListener('change', (event) => {
-        field.value = event.target.dataset.modelId;
-      });
       li.appendChild(input);
 
       let picture = document.createElement('picture');
