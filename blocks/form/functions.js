@@ -36,17 +36,17 @@ function days(endDate, startDate) {
 function populateImageChoice(imageChoiceField, globals) {
   const response = [
     {
-      id: 1,
+      id: "JUKEF16B",
       name: 'Nissan Juke',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
     },
     {
-      id: 2,
+      id: "QASHQAIJ12B",
       name: 'New Nissan Qashqai',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
     },
     {
-      id: 3,
+      id: "XTRAILT33B",
       name: 'Nissan X-Trail',
       source: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
     },
