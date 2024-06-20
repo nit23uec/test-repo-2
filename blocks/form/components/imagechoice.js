@@ -2,13 +2,16 @@
 export default async function decorate(fieldDiv, field) {
   const labelEl = fieldDiv.querySelector("legend");
   fieldDiv.replaceChildren(labelEl);
-  fieldDiv.classList.add("image-choice-container");
   console.log(field.enum);
   const models = field.enum;
 
+  const outerdiv = document.createElement('div');
+  outerdiv.classList.add("image-choice-container");
+  fieldDiv.appendChild(outerdiv);
+
   const ul = document.createElement('ul');
   ul.className = 'model-list-wrapper';
-  fieldDiv.appendChild(ul);
+  outerdiv.appendChild(ul);
   models && models.forEach(model => {
       let li = document.createElement('li');
       li.className = 'model-block';
