@@ -24,6 +24,9 @@ export default async function decorate(fieldDiv, field) {
       input.id = model.id;
       input.name = 'model_card';
       input.tabIndex = '-1';
+      input.addEventListener('change', (event) => {
+        field.value = event.target.dataset.modelId;
+      });
       li.appendChild(input);
 
       let picture = document.createElement('picture');
