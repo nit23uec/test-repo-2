@@ -112,4 +112,4 @@ function populateSelectedModel(modelChoiceField, selectedModelPanel, globals) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { getFullName, days, populateImageChoice, populateSelectedModel };
+export { getFullName, days, populateImageChoice, populateSelectedModel, populateRepeatablePanel };
