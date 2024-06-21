@@ -76,7 +76,24 @@ function annotateItems(items, formDefinition, formFieldMap) {
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
           fieldWrapper.setAttribute('data-aue-label', 'Text');
           fieldWrapper.setAttribute('data-aue-prop', 'value');
-        } else if (!fd.properties['fd:fragment'] && !fd.repeatable) {
+        } else if (fd.fieldType === 'panel') {
+          if (fd.properties['fd:fragment']) {
+            annotateFormFragment(fieldWrapper, fd);
+          } else {
+            if (fd.repeatable) {
+              if (!fieldWrapper.hasAttribute('data-repeatable')) {
+                let repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
+                fieldWrapper = repeatableFieldWrapper;
+              }
+            }
+            fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
+            fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
+            fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
+            fieldWrapper.setAttribute('data-aue-type', 'container');
+            fieldWrapper.setAttribute('data-aue-behavior', 'component');
+            annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          }
+        } else {
           fieldWrapper.setAttribute('data-aue-type', 'component');
           fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
           fieldWrapper.setAttribute('data-aue-model', fd.fieldType === 'image' || fd.fieldType === 'button' ? `form-${fd.fieldType}` : fd.fieldType);
@@ -85,24 +102,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
       } else {
         console.warn(`field ${id} not found in form definition`);
       }
-      if (fd && fd.fieldType === 'panel') {
-        if (fd.properties['fd:fragment']) {
-          annotateFormFragment(fieldWrapper, fd);
-        } else {
-          if (fd.repeatable) {
-            if (!fieldWrapper.hasAttribute('data-repeatable')) {
-              let repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
-              fieldWrapper = repeatableFieldWrapper;
-            }
-          }
-          fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
-          fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
-          fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
-          fieldWrapper.setAttribute('data-aue-type', 'container');
-          fieldWrapper.setAttribute('data-aue-behavior', 'component');
-          annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
-        }
-      }
+    
     }
   }
 }
