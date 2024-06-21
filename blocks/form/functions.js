@@ -29,6 +29,32 @@ function days(endDate, startDate) {
 }
 
 /**
+ * Populates the repeatable panel with the given array of objects
+ * @param {object} repeatablePanel
+ * @param {scope} globals
+ */
+function populateRepeatablePanel(repeatablePanel, globals) {
+  const response = [
+    {
+      modelId: "JUKEF16B",
+      modelName: 'Nissan Juke',
+      modelImage: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/juke/my23/Juke_Packshot_Yellow.png.ximg.l_6_m.smart.png',
+    },
+    {
+      modelId: "QASHQAIJ12B",
+      modelName: 'New Nissan Qashqai',
+      modelImage: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/nissan_europe/UNVEIL_QQ-PUSH/new-unveil-qashqai.png.ximg.l_6_m.smart.png',
+    },
+    {
+      modelId: "XTRAILT33B",
+      modelName: 'Nissan X-Trail',
+      modelImage: 'https://www-europe.nissan-cdn.net/content/dam/Nissan/gb/vehicles/packshots/x-trail-my24/MAIN_MENU_MY24_ALLOYS.jpg.ximg.l_6_m.smart.jpg',
+    },
+  ];
+  globals.functions.setProperty(repeatablePanel, {value: response});
+}
+
+/**
  * Populates the image choice component with the given options
  * @param {object} imageChoiceField
  * @param {scope} globals
