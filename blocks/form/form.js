@@ -475,6 +475,7 @@ export async function fetchForm(pathname) {
 }
 
 export default async function decorate(block) {
+  console.log('decorate started');
   let container = block.querySelector('a[href]');
   let formDef;
   let pathname;
@@ -515,3 +516,7 @@ export default async function decorate(block) {
     container.replaceWith(form);
   }
 }
+
+document.body.addEventListener("aue:initialized", (e) => {
+  console.log('app initialised');
+})
