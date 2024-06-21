@@ -157,7 +157,7 @@ async function annotateFormsForEditing(forms) {
     div.replaceChildren();
     const pre = document.createElement('pre');
     const code = document.createElement('code');
-    code.textContent = JSON.stringify(JSON.stringify(formDef));
+    code.textContent = JSON.stringify(formDef);
     pre.appendChild(code);
     div.appendChild(pre);
     block.classList.add('edit-mode');
