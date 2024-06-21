@@ -3546,7 +3546,7 @@ class Field extends Scriptable {
     }
     updateDataNodeAndTypedValue(val) {
         const dataNode = this.getDataNode();
-        if (staticFields.indexOf(this.fieldType) > -1 && typeof dataNode !== 'undefined') {
+        if (staticFields.indexOf(this.fieldType) > -1 && typeof dataNode !== 'undefined' && dataNode !== NullDataValue) {
             return;
         }
         const Constraints = this._getConstraintObject();
