@@ -153,7 +153,7 @@ async function annotateFormsForEditing(forms) {
     const formDef = await formDefResp.json();
     console.log('formDef', formDef);
     const block = form.closest('.block[data-aue-resource]');
-    if (block.classList.contains('edit-mode')) return;
+    if (block.classList.contains('edit-mode') || form.classList.contains('edit-mode')) return;
     const div = form.parentElement;
     div.replaceChildren();
     const pre = document.createElement('pre');
