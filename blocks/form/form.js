@@ -392,7 +392,7 @@ function getItems(container) {
   return [];
 }
 
-async function createFormForAuthoring(formDef) {
+export async function createFormForAuthoring(formDef) {
   const form = document.createElement('form');
   await generateFormRendition(formDef, form, getItems);
   return form;
@@ -488,9 +488,6 @@ export async function fetchForm(pathname) {
 }
 
 export default async function decorate(block) {
-  if (block.classList.contains('edit-mode')) {
-    window.editMode = true;
-  }
   let container = block.querySelector('a[href]');
   let formDef;
   let pathname;
@@ -515,7 +512,7 @@ export default async function decorate(block) {
       rules = false;
     } else {
       afModule = await import('./rules/index.js');
-      if (afModule && afModule.initAdaptiveForm && !window.editMode) {
+      if (afModule && afModule.initAdaptiveForm && !block.classList.contains('edit-mode')) {
         form = await afModule.initAdaptiveForm(formDef, createForm);
       } else {
         form = await createFormForAuthoring(formDef);

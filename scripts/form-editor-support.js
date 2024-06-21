@@ -265,7 +265,22 @@ function attachEventListners(main) {
   main?.addEventListener('aue:ui-select', handleEditorSelect);
 
   document.body.addEventListener('aue:ui-preview', () => {
-    // window.location.reload();
+    const forms = document.querySelectorAll('form');
+    forms.forEach(async (form) => {
+      const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
+      const formDef = await formDefResp.json();
+      console.log('formDef', formDef);
+      const block = form.closest('.block[data-aue-resource]');
+      block.classList.remove('edit-mode')
+      const div = form.parentElement;
+      div.replaceChildren();
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.textContent = JSON.stringify(formDef);
+      pre.appendChild(code);
+      div.appendChild(pre);
+      await decorate(block);
+    });
   });
 
   document.body.addEventListener('aue:ui-edit', () => {
