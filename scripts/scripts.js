@@ -93,6 +93,9 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  document.body.addEventListener("aue:ue-edit", (e) => {
+    console.log('ue-edit event fired');
+  })
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
