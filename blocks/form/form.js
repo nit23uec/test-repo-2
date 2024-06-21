@@ -394,8 +394,6 @@ function getItems(container) {
 
 async function createFormForAuthoring(formDef) {
   const form = document.createElement('form');
-  form.dataset.id = formDef.id;
-  form.dataset.formpath = formDef.properties['fd:path'];
   await generateFormRendition(formDef, form, getItems);
   return form;
 }
@@ -528,6 +526,10 @@ export default async function decorate(block) {
     form.dataset.action = formDef.action || pathname?.split('.json')[0];
     form.dataset.source = source;
     form.dataset.rules = rules;
+    form.dataset.id = formDef.id;
+    if (source === 'aem' && formDef.properties) {
+      form.dataset.formpath = formDef.properties['fd:path'];
+    }
     container.replaceWith(form);
   }
 }
