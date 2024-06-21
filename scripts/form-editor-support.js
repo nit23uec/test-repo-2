@@ -91,6 +91,9 @@ function annotateItems(items, formDefinition, formFieldMap) {
         } else {
           if (fd.repeatable) {
             let repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
+            repeatableFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
+            repeatableFieldWrapper.setAttribute('data-aue-model', fd.fieldType);
+            repeatableFieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
             repeatableFieldWrapper.setAttribute('data-aue-type', 'container');
             repeatableFieldWrapper.setAttribute('data-aue-behavior', 'component');
             annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
