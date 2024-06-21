@@ -96,6 +96,9 @@ async function loadEager(doc) {
   document.body.addEventListener("aue:ue-edit", (e) => {
     console.log('ue-edit event fired');
   })
+  document.addEventListener("aue:ue-edit", (e) => {
+    console.log('doc ue-edit event fired');
+  })
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
