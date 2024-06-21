@@ -288,11 +288,7 @@ function attachEventListners(main) {
 
   document.body.addEventListener('aue:ui-edit', () => {
     const forms = document.querySelectorAll('form');
-    forms.forEach((formEl) => {
-      if (!formEl.classList.contains('edit-mode')) {
-        formEl.classList.add('edit-mode');
-      }
-    });
+    annotateFormsForEditing(forms);
   });
 }
 
