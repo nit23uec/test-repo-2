@@ -1,5 +1,5 @@
 import { generateFormRendition } from '../blocks/form/form.js';
-import { loadCSS } from './aem.js';
+import { loadBlock, loadCSS } from './aem.js';
 
 export function getItems(container) {
   if (container[':itemsOrder'] && container[':items']) {
@@ -152,7 +152,18 @@ async function annotateFormsForEditing(forms) {
     const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
     const formDef = await formDefResp.json();
     console.log('formDef', formDef);
-    annotateFormForEditing(form, formDef);
+    const block = form.closest('.block[data-aue-resource]');
+    const div = block.child.child;
+    div.replaceChildren();
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    code.textContent = JSON.stringify(JSON.stringify(formDef));
+    pre.appendChild(code);
+    div.appendChild(pre);
+    block.classList.add('edit-mode');
+    await loadBlock(block);
+    const formEl = block.querySelector('form');
+    annotateFormForEditing(formEl, formDef);
   });
 }
 

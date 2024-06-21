@@ -405,7 +405,7 @@ export async function createForm(formDef, data) {
   enableValidation(form);
   transferRepeatableDOM(form);
 
-  if (afModule) {
+  if (afModule && !window.editMode) {
     window.setTimeout(async () => {
       afModule.loadRuleEngine(formDef, form, captcha, generateFormRendition, data);
     }, DELAY_MS);
@@ -475,7 +475,9 @@ export async function fetchForm(pathname) {
 }
 
 export default async function decorate(block) {
-  console.log('decorate started');
+  if (block.classList.contains('edit-mode')) {
+    window.editMode = true;
+  }
   let container = block.querySelector('a[href]');
   let formDef;
   let pathname;
