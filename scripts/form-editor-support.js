@@ -153,7 +153,7 @@ async function annotateFormsForEditing(forms) {
     const formDef = await formDefResp.json();
     console.log('formDef', formDef);
     const block = form.closest('.block[data-aue-resource]');
-    const div = block.child.child;
+    const div = form.parentElement;
     div.replaceChildren();
     const pre = document.createElement('pre');
     const code = document.createElement('code');
