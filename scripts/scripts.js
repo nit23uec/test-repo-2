@@ -98,9 +98,6 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    document.body.addEventListener("aue:initialized", (e) => {
-      console.log('app initialised eager');
-    })
     await waitForLCP(LCP_BLOCKS);
   }
 

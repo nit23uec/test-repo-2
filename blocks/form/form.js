@@ -517,6 +517,6 @@ export default async function decorate(block) {
   }
 }
 
-document.body.addEventListener("aue:initialized", (e) => {
-  console.log('app initialised');
+document.body.addEventListener("aue:ue-edit", (e) => {
+  console.log('ue-edit event fired');
 })
