@@ -89,9 +89,16 @@ function annotateItems(items, formDefinition, formFieldMap) {
         if (fd.properties['fd:fragment']) {
           annotateFormFragment(fieldWrapper, fd);
         } else {
-          fieldWrapper.setAttribute('data-aue-type', 'container');
-          fieldWrapper.setAttribute('data-aue-behavior', 'component');
-          annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          if (fd.repeatable) {
+            let repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
+            repeatableFieldWrapper.setAttribute('data-aue-type', 'container');
+            repeatableFieldWrapper.setAttribute('data-aue-behavior', 'component');
+            annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
+          } else {
+            fieldWrapper.setAttribute('data-aue-type', 'container');
+            fieldWrapper.setAttribute('data-aue-behavior', 'component');
+            annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
+          }
         }
       }
     }
