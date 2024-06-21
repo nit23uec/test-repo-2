@@ -219,6 +219,7 @@ function createPlainText(fd) {
 
 function createImage(fd) {
   const field = createFieldWrapper(fd);
+  field.id = fd.id;
   const image = `
   <picture>
     <source srcset="${fd.source}?width=2000&optimize=medium" media="(min-width: 600px)">
