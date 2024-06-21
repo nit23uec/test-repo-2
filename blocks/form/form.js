@@ -385,6 +385,21 @@ function enableValidation(form) {
   });
 }
 
+function getItems(container) {
+  if (container[':itemsOrder'] && container[':items']) {
+    return container[':itemsOrder'].map((itemKey) => container[':items'][itemKey]);
+  }
+  return [];
+}
+
+async function createFormForAuthoring(formDef) {
+  const form = document.createElement('form');
+  form.dataset.id = formDef.id;
+  form.dataset.formpath = formDef.properties['fd:path'];
+  await generateFormRendition(formDef, form, getItems);
+  return form;
+}
+
 export async function createForm(formDef, data) {
   const { action: formPath } = formDef;
   const form = document.createElement('form');
@@ -405,7 +420,7 @@ export async function createForm(formDef, data) {
   enableValidation(form);
   transferRepeatableDOM(form);
 
-  if (afModule && !window.editMode) {
+  if (afModule) {
     window.setTimeout(async () => {
       afModule.loadRuleEngine(formDef, form, captcha, generateFormRendition, data);
     }, DELAY_MS);
@@ -502,8 +517,10 @@ export default async function decorate(block) {
       rules = false;
     } else {
       afModule = await import('./rules/index.js');
-      if (afModule && afModule.initAdaptiveForm) {
+      if (afModule && afModule.initAdaptiveForm && !window.editMode) {
         form = await afModule.initAdaptiveForm(formDef, createForm);
+      } else {
+        form = await createFormForAuthoring(formDef);
       }
     }
     form.dataset.redirectUrl = formDef.redirectUrl || '';
@@ -511,10 +528,6 @@ export default async function decorate(block) {
     form.dataset.action = formDef.action || pathname?.split('.json')[0];
     form.dataset.source = source;
     form.dataset.rules = rules;
-    form.dataset.id = formDef.id;
-    if (source === 'aem' && formDef.properties) {
-      form.dataset.formpath = formDef.properties['fd:path'];
-    }
     container.replaceWith(form);
   }
 }
