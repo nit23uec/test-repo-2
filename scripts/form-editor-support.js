@@ -90,29 +90,17 @@ function annotateItems(items, formDefinition, formFieldMap) {
           annotateFormFragment(fieldWrapper, fd);
         } else {
           if (fd.repeatable) {
-            if (fieldWrapper.hasAttribute('data-repeatable')) {
-              fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
-              fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
-              fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
-              fieldWrapper.setAttribute('data-aue-type', 'container');
-              fieldWrapper.setAttribute('data-aue-behavior', 'component');
-              annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
-            } else {
+            if (!fieldWrapper.hasAttribute('data-repeatable')) {
               let repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
-              if (repeatableFieldWrapper) {
-                repeatableFieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
-                repeatableFieldWrapper.setAttribute('data-aue-model', fd.fieldType);
-                repeatableFieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
-                repeatableFieldWrapper.setAttribute('data-aue-type', 'container');
-                repeatableFieldWrapper.setAttribute('data-aue-behavior', 'component');
-                annotateItems(repeatableFieldWrapper.childNodes, formDefinition, formFieldMap);
-              }
+              fieldWrapper = repeatableFieldWrapper;
             }
-          } else {
-            fieldWrapper.setAttribute('data-aue-type', 'container');
-            fieldWrapper.setAttribute('data-aue-behavior', 'component');
-            annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
           }
+          fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
+          fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
+          fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
+          fieldWrapper.setAttribute('data-aue-type', 'container');
+          fieldWrapper.setAttribute('data-aue-behavior', 'component');
+          annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
         }
       }
     }
