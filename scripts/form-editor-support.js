@@ -1,5 +1,5 @@
-import { generateFormRendition } from '../blocks/form/form.js';
-import { loadBlock, loadCSS } from './aem.js';
+import decorate, { generateFormRendition } from '../blocks/form/form.js';
+import { loadCSS } from './aem.js';
 
 export function getItems(container) {
   if (container[':itemsOrder'] && container[':items']) {
@@ -161,7 +161,7 @@ async function annotateFormsForEditing(forms) {
     pre.appendChild(code);
     div.appendChild(pre);
     block.classList.add('edit-mode');
-    await loadBlock(block);
+    await decorate(block);
     const formEl = block.querySelector('form');
     annotateFormForEditing(formEl, formDef);
   });
