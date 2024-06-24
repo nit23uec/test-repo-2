@@ -165,7 +165,7 @@ async function renderFormBlock(form, editMode) {
 }
 
 async function annotateFormsForEditing(forms) {
-  if (typeof window.currentMode !== 'undefined' && window.currentMode === 'preview') return;
+  if (currentMode === 'preview') return;
   forms.forEach(async (form) => {
     const { formEl, formDef } = (await renderFormBlock(form, true)) || {};
     if (formEl && formDef) {
