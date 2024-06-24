@@ -1,6 +1,8 @@
 import decorate, { generateFormRendition } from '../blocks/form/form.js';
 import { loadCSS } from './aem.js';
 
+window.currentMode = 'preview';
+
 export function getItems(container) {
   if (container[':itemsOrder'] && container[':items']) {
     return container[':itemsOrder'].map((itemKey) => container[':items'][itemKey]);
