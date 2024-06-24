@@ -149,28 +149,29 @@ function handleEditorSelect(event) {
 
 async function renderFormBlock(form, editMode) {
   const block = form.closest('.block[data-aue-resource]');
-  if (block.classList.contains('edit-mode')) return {};
-  block.classList.toggle('edit-mode', editMode);
-  const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
-  const formDef = await formDefResp.json();
-  const div = form.parentElement;
-  div.replaceChildren();
-  const pre = document.createElement('pre');
-  const code = document.createElement('code');
-  code.textContent = JSON.stringify(formDef);
-  pre.appendChild(code);
-  div.appendChild(pre);
-  await decorate(block);
-  return  {
-    formEl: block.querySelector('form'),
-    formDef
+  if (editMode && !block.classList.contains('edit-mode') || !editMode) {
+    block.classList.toggle('edit-mode', editMode);
+    const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
+    const formDef = await formDefResp.json();
+    const div = form.parentElement;
+    div.replaceChildren();
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    code.textContent = JSON.stringify(formDef);
+    pre.appendChild(code);
+    div.appendChild(pre);
+    await decorate(block);
+    return  {
+      formEl: block.querySelector('form'),
+      formDef
+    }
   }
 }
 
 async function annotateFormsForEditing(forms) {
   if (typeof currentMode !== 'undefined' && currentMode === 'preview') return;
   forms.forEach(async (form) => {
-    const { formEl, formDef } = await renderFormBlock(form, true);
+    const { formEl, formDef } = (await renderFormBlock(form, true)) || {};
     if (formEl && formDef) {
       annotateFormForEditing(formEl, formDef);
     }
