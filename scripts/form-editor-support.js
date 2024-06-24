@@ -87,6 +87,7 @@ function annotateItems(items, formDefinition, formFieldMap) {
             fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
             fieldWrapper.setAttribute('data-aue-type', 'container');
             fieldWrapper.setAttribute('data-aue-behavior', 'component');
+            fieldWrapper.setAttribute('data-aue-filter', 'form');
             annotateItems(fieldWrapper.childNodes, formDefinition, formFieldMap);
           }
         } else {
