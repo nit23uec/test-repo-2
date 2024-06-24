@@ -80,12 +80,6 @@ function annotateItems(items, formDefinition, formFieldMap) {
           if (fd.properties['fd:fragment']) {
             annotateFormFragment(fieldWrapper, fd);
           } else {
-            if (fd.repeatable) {
-              if (!fieldWrapper.hasAttribute('data-repeatable')) {
-                let repeatableFieldWrapper = fieldWrapper.querySelector("[data-repeatable='true']");
-                fieldWrapper = repeatableFieldWrapper;
-              }
-            }
             fieldWrapper.setAttribute('data-aue-resource', `urn:aemconnection:${fd.properties['fd:path']}`);
             fieldWrapper.setAttribute('data-aue-model', fd.fieldType);
             fieldWrapper.setAttribute('data-aue-label', fd.label?.value || fd.name);
