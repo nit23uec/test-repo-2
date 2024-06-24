@@ -147,22 +147,26 @@ function handleEditorSelect(event) {
   }
 }
 
+async function renderFormBlock(block, form, editMode) {
+  const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
+  const formDef = await formDefResp.json();
+  const div = form.parentElement;
+  div.replaceChildren();
+  const pre = document.createElement('pre');
+  const code = document.createElement('code');
+  code.textContent = JSON.stringify(formDef);
+  pre.appendChild(code);
+  div.appendChild(pre);
+  block.classList.toggle('edit-mode', editMode);
+  block.classList.toggle('preview-mode', !editMode);
+  await decorate(block);
+}
+
 async function annotateFormsForEditing(forms) {
   forms.forEach(async (form) => {
-    const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
-    const formDef = await formDefResp.json();
-    console.log('formDef', formDef);
     const block = form.closest('.block[data-aue-resource]');
-    if (block.classList.contains('edit-mode') || form.classList.contains('edit-mode')) return;
-    const div = form.parentElement;
-    div.replaceChildren();
-    const pre = document.createElement('pre');
-    const code = document.createElement('code');
-    code.textContent = JSON.stringify(formDef);
-    pre.appendChild(code);
-    div.appendChild(pre);
-    block.classList.add('edit-mode');
-    await decorate(block);
+    if (currentMode === 'preview' || block.classList.contains('edit-mode')) return;
+    await renderFormBlock(block, form, true);
     const formEl = block.querySelector('form');
     annotateFormForEditing(formEl, formDef);
   });
@@ -265,25 +269,15 @@ function attachEventListners(main) {
   main?.addEventListener('aue:ui-select', handleEditorSelect);
 
   document.body.addEventListener('aue:ui-preview', () => {
+    window.currentMode = 'preview';
     const forms = document.querySelectorAll('form');
     forms.forEach(async (form) => {
-      const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
-      const formDef = await formDefResp.json();
-      console.log('formDef', formDef);
-      const block = form.closest('.block[data-aue-resource]');
-      block.classList.remove('edit-mode');
-      const div = form.parentElement;
-      div.replaceChildren();
-      const pre = document.createElement('pre');
-      const code = document.createElement('code');
-      code.textContent = JSON.stringify(formDef);
-      pre.appendChild(code);
-      div.appendChild(pre);
-      await decorate(block);
+      await renderFormBlock(block, form, false);
     });
   });
 
   document.body.addEventListener('aue:ui-edit', () => {
+    window.currentMode = 'edit';
     const forms = document.querySelectorAll('form');
     annotateFormsForEditing(forms);
   });
