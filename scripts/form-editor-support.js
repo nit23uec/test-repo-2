@@ -148,6 +148,9 @@ function handleEditorSelect(event) {
 }
 
 async function renderFormBlock(form, editMode) {
+  const block = form.closest('.block[data-aue-resource]');
+  block.classList.toggle('edit-mode', editMode);
+  block.classList.toggle('preview-mode', !editMode);
   const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
   const formDef = await formDefResp.json();
   const div = form.parentElement;
@@ -157,9 +160,6 @@ async function renderFormBlock(form, editMode) {
   code.textContent = JSON.stringify(formDef);
   pre.appendChild(code);
   div.appendChild(pre);
-  const block = form.closest('.block[data-aue-resource]');
-  block.classList.toggle('edit-mode', editMode);
-  block.classList.toggle('preview-mode', !editMode);
   await decorate(block);
 }
 
