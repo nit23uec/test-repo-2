@@ -64,7 +64,7 @@ function annotateFormFragment(fragmentFieldWrapper, fragmentDefinition) {
 
 function annotateItems(items, formDefinition, formFieldMap) {
   for (let i = items.length - 1; i >= 0; i -= 1) {
-    let fieldWrapper = items[i];
+    const fieldWrapper = items[i];
     if (fieldWrapper.classList.contains('field-wrapper')) {
       const { id } = fieldWrapper.dataset;
       const fd = getFieldById(formDefinition, id, formFieldMap);
@@ -96,7 +96,6 @@ function annotateItems(items, formDefinition, formFieldMap) {
       } else {
         console.warn(`field ${id} not found in form definition`);
       }
-    
     }
   }
 }
@@ -143,7 +142,7 @@ function handleEditorSelect(event) {
 
 async function renderFormBlock(form, editMode) {
   const block = form.closest('.block[data-aue-resource]');
-  if (editMode && !block.classList.contains('edit-mode') || !editMode) {
+  if ((editMode && !block.classList.contains('edit-mode')) || !editMode) {
     block.classList.toggle('edit-mode', editMode);
     const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
     const formDef = await formDefResp.json();
@@ -155,15 +154,16 @@ async function renderFormBlock(form, editMode) {
     pre.appendChild(code);
     div.appendChild(pre);
     await decorate(block);
-    return  {
+    return {
       formEl: block.querySelector('form'),
-      formDef
-    }
+      formDef,
+    };
   }
+  return null;
 }
 
 async function annotateFormsForEditing(forms) {
-  if (typeof currentMode !== 'undefined' && currentMode === 'preview') return;
+  if (typeof window.currentMode !== 'undefined' && window.currentMode === 'preview') return;
   forms.forEach(async (form) => {
     const { formEl, formDef } = (await renderFormBlock(form, true)) || {};
     if (formEl && formDef) {
@@ -297,4 +297,3 @@ const forms = document.querySelectorAll('form');
 annotateFormsForEditing(forms);
 const observer = new MutationObserver(instrumentForms);
 observer.observe(document, { childList: true, subtree: true, attributeFilter: ['form'] });
-//enableRuleEditorExtension();

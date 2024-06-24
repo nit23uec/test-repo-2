@@ -67,7 +67,7 @@ const createTextArea = withFieldWrapper((fd) => {
 const createSelect = withFieldWrapper((fd) => {
   const select = document.createElement('select');
   select.required = fd.required;
-  select.title = fd.tooltip ?? '';
+  select.title = fd.tooltip ? stripTags(fd.tooltip, '') : '';
   select.readOnly = fd.readOnly;
   select.multiple = fd.type === 'string[]' || fd.type === 'boolean[]' || fd.type === 'number[]';
   let ph;
@@ -219,12 +219,12 @@ function createPlainText(fd) {
 
 function createImage(fd) {
   const field = createFieldWrapper(fd);
-  field.id = fd.id;
+  const imagePath = fd.source || fd.properties['fd:repoPath'] || '';
   const image = `
   <picture>
-    <source srcset="${fd.source}?width=2000&optimize=medium" media="(min-width: 600px)">
-    <source srcset="${fd.source}?width=750&optimize=medium">
-    <img alt="${fd.altText || fd.name}" src="${fd.source}?width=750&optimize=medium">
+    <source srcset="${imagePath}?width=2000&optimize=medium" media="(min-width: 600px)">
+    <source srcset="${imagePath}?width=750&optimize=medium">
+    <img alt="${fd.altText || fd.name}" src="${imagePath}?width=750&optimize=medium">
   </picture>`;
   field.innerHTML = image;
   return field;
@@ -310,6 +310,9 @@ function inputDecorator(field, element) {
     if (field.maxFileSize) {
       input.dataset.maxFileSize = field.maxFileSize;
     }
+    if (field.default) {
+      input.value = field.default;
+    }
     if (input.type === 'email') {
       input.pattern = emailPattern;
     }
@@ -385,16 +388,14 @@ function enableValidation(form) {
   });
 }
 
-function getItems(container) {
-  if (container[':itemsOrder'] && container[':items']) {
-    return container[':itemsOrder'].map((itemKey) => container[':items'][itemKey]);
-  }
-  return [];
-}
-
-export async function createFormForAuthoring(formDef) {
+async function createFormForAuthoring(formDef) {
   const form = document.createElement('form');
-  await generateFormRendition(formDef, form, getItems);
+  await generateFormRendition(formDef, form, (container) => {
+    if (container[':itemsOrder'] && container[':items']) {
+      return container[':itemsOrder'].map((itemKey) => container[':items'][itemKey]);
+    }
+    return [];
+  });
   return form;
 }
 
@@ -424,6 +425,11 @@ export async function createForm(formDef, data) {
     }, DELAY_MS);
   }
 
+  form.addEventListener('reset', async () => {
+    const newForm = await createForm(formDef);
+    document.querySelector(`[data-action="${formDef.action}"]`).replaceWith(newForm);
+  });
+
   form.addEventListener('submit', (e) => {
     handleSubmit(e, form, captcha);
   });
@@ -439,6 +445,20 @@ function cleanUp(content) {
   const formDef = content.replaceAll('^(([^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+(\\\\.[^<>()\\\\[\\\\]\\\\\\\\.,;:\\\\s@\\"]+)*)|(\\".+\\"))@((\\\\[[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}\\\\.[0-9]{1,3}])|(([a-zA-Z\\\\-0-9]+\\\\.)\\+[a-zA-Z]{2,}))$', '');
   return formDef?.replace(/\x83\n|\n|\s\s+/g, '');
 }
+/*
+  Newer Clean up - Replace backslashes that are not followed by valid json escape characters
+  function cleanUp(content) {
+    return content.replace(/\\/g, (match, offset, string) => {
+      const prevChar = string[offset - 1];
+      const nextChar = string[offset + 1];
+      const validEscapeChars = ['b', 'f', 'n', 'r', 't', '"', '\\'];
+      if (validEscapeChars.includes(nextChar) || prevChar === '\\') {
+        return match;
+      }
+      return '';
+    });
+  }
+*/
 
 function decode(rawContent) {
   const content = rawContent.trim();
@@ -530,7 +550,3 @@ export default async function decorate(block) {
     container.replaceWith(form);
   }
 }
-
-document.body.addEventListener("aue:ue-edit", (e) => {
-  console.log('ue-edit event fired');
-})
