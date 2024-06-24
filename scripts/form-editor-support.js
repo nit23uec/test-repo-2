@@ -161,13 +161,14 @@ async function renderFormBlock(form, editMode) {
   pre.appendChild(code);
   div.appendChild(pre);
   await decorate(block);
+  return block.querySelector('form');
 }
 
 async function annotateFormsForEditing(forms) {
   if (currentMode === 'preview') return;
   forms.forEach(async (form) => {
-    await renderFormBlock(form, true);
-    const formEl = block.querySelector('form');
+    if (form.classList.contains('edit-mode')) return;
+    const formEl = await renderFormBlock(form, true);
     annotateFormForEditing(formEl, formDef);
   });
 }
