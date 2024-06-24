@@ -151,7 +151,6 @@ async function renderFormBlock(form, editMode) {
   const block = form.closest('.block[data-aue-resource]');
   if (block.classList.contains('edit-mode')) return;
   block.classList.toggle('edit-mode', editMode);
-  block.classList.toggle('preview-mode', !editMode);
   const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
   const formDef = await formDefResp.json();
   const div = form.parentElement;
@@ -162,14 +161,17 @@ async function renderFormBlock(form, editMode) {
   pre.appendChild(code);
   div.appendChild(pre);
   await decorate(block);
-  return block.querySelector('form');
+  return  {
+    formEl: block.querySelector('form'),
+    formDef
+  }
 }
 
 async function annotateFormsForEditing(forms) {
   if (currentMode === 'preview') return;
   forms.forEach(async (form) => {
-    const formEl = await renderFormBlock(form, true);
-    if (formEl) {
+    const { formEl, formDef } = await renderFormBlock(form, true);
+    if (formEl && formDef) {
       annotateFormForEditing(formEl, formDef);
     }
   });
