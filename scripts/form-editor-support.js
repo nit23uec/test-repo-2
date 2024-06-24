@@ -149,6 +149,7 @@ function handleEditorSelect(event) {
 
 async function renderFormBlock(form, editMode) {
   const block = form.closest('.block[data-aue-resource]');
+  if (block.classList.contains('edit-mode')) return;
   block.classList.toggle('edit-mode', editMode);
   block.classList.toggle('preview-mode', !editMode);
   const formDefResp = await fetch(`${form.dataset.formpath}.model.json`);
@@ -167,9 +168,10 @@ async function renderFormBlock(form, editMode) {
 async function annotateFormsForEditing(forms) {
   if (currentMode === 'preview') return;
   forms.forEach(async (form) => {
-    if (form.classList.contains('edit-mode')) return;
     const formEl = await renderFormBlock(form, true);
-    annotateFormForEditing(formEl, formDef);
+    if (formEl) {
+      annotateFormForEditing(formEl, formDef);
+    }
   });
 }
 
