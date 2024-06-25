@@ -261,7 +261,7 @@
                         "valueType": "boolean"
                     },
                     {
-                        "component": "richtext",
+                        "component": "reference",
                         "name": "templatePath",
                         "label": "External template path",
                         "valueType": "string",
