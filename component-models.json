@@ -262,10 +262,17 @@
                     },
                     {
                         "component": "richtext",
+                        "name": "templatePath",
+                        "label": "External template path",
+                        "valueType": "string",
+                        "condition": { "==": [{ "var": "useExternalEmailTemplate" }, true] }
+                    },
+                    {
+                        "component": "richtext",
                         "name": "template",
                         "label": "Email template",
                         "valueType": "string",
-                        "condition": { "==": [{ "var": "useExternalEmailTemplate" }, true] }
+                        "condition": { "!=": [{ "var": "useExternalEmailTemplate" }, true] }
                     },
                     {
                         "component": "boolean",
