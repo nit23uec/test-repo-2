@@ -261,7 +261,7 @@
                         "valueType": "boolean"
                     },
                     {
-                        "component": "reference",
+                        "component": "aem-content",
                         "name": "templatePath",
                         "label": "External template path",
                         "valueType": "string",
