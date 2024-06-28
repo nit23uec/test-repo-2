@@ -1,5 +1,5 @@
 mountpoints:
   /:
-    url: https://author-p12802-e1347809.adobeaemcloud.com/bin/franklin.delivery/nit23uec/test-repo-2/main
+    url: https://author-p10652-e203356-cmstg.adobeaemcloud.com/bin/franklin.delivery/nit23uec/test-repo-2/main
     type: "markup"
     suffix: ".html"
