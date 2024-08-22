@@ -73,7 +73,10 @@ async function applyChanges(event) {
           decorateRichtext(newSection);
           decorateSections(parentElement);
           decorateBlocks(parentElement);
+          const startTime = new Date().getTime();
           await loadBlocks(parentElement);
+          const timeTaken = new Date().getTime() - startTime;
+          console.log(`time to loadBlocks: ${timeTaken}`);
           element.remove();
           newSection.style.display = null;
         } else {
