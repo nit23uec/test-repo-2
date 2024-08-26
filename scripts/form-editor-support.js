@@ -333,7 +333,7 @@ function enableRuleEditorExtension() {
   let head = document.getElementsByTagName('head')[0];
   var meta = document.createElement('meta');
   meta.name = "urn:adobe:aue:config:extensions";
-  meta.content = "https://experience-stage.adobe.com/solutions/livecycle-ruleeditor-ui-service/static-assets/resources/universal_editor.html?livecycle-ruleeditor-ui-service_version=PR-25-59f2951e957d265ba5462d23cec5b4fe297b82f3";
+  meta.content = "https://experience-stage.adobe.com/solutions/livecycle-ruleeditor-ui-service/static-assets/resources/universal_editor.html?livecycle-ruleeditor-ui-service_version=PR-25-1906e182c637890f9cecdbd5fddc5197e1533a8e";
   head.appendChild(meta);
 }
 
